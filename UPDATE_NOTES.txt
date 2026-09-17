@@ -1,0 +1,25 @@
+LifeTracker 1.1.1 - Current Development Update
+==============================================
+
+This build remains version 1.1.1.
+Version 1.1.2 remains reserved for the live/release build.
+
+Added in this update:
+- Hidden LifeFall side-scroller Easter egg with desktop and touch-ready controls.
+- Hidden developer console Easter egg.
+- The developer console can speak a response to the "hello" command using the local operating system speech service when available.
+- Typing "yes" after the spoken prompt opens Tic-Tac-Toe against LifeTracker.
+- Stable UUID for every account.
+- Account-role model for Student, Teacher, Counselor, College Reviewer, and Administrator.
+- Sharing & Access tab for preparing consent-based, read-only external access.
+- Share scopes for Grades, Academic History, Portfolio, and Goals.
+- Share expiration and revocation.
+- Random invitation codes with only a SHA-256 hash stored locally.
+- Local audit entries for share creation/revocation.
+- Best-effort owner-only POSIX permissions on supported file systems.
+- Security architecture documentation for eventual phone/cloud migration.
+
+Important:
+Remote access is not active in 1.1.1. Teachers, counselors, and colleges cannot remotely sign in yet. The current Sharing tab prepares the permission model for the future server/cloud implementation.
+
+Academic data is not yet fully encrypted at rest. Passwords are securely salted/hashed, but production cloud/mobile storage will still require authenticated encryption and secure key management.
