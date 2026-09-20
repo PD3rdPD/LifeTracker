@@ -1,0 +1,18 @@
+LifeTracker 1.1.3 Functional Touch UI
+- Functional bottom navigation: Home, Classes, Assignments, Goals, SAT, Portfolio, History, Settings.
+- New accounts show true empty states; mockup sample academic data is no longer hard-coded.
+- Vector-drawn icons replace unsupported Unicode/emoji glyphs.
+- Assignments support add, edit, complete/undo, remove, due dates and persistence.
+- SAT Readiness supports target, practice score, section scores, test date/note and persistence.
+- Home dashboard derives counts and academic metrics from actual saved user data.
+- Classes, goals, portfolio and history are connected to existing LifeTracker storage.
+- Appearance supports theme mode and accent colors.
+- Accessibility settings include color vision assistance, contrast, dyslexia/readability, larger text, spacing, simplified layout, reduced motion and larger touch targets.
+- Windows launcher now compiles from relative paths and works when the project path contains spaces.
+
+V1.1.3 patch:
+- Settings now apply theme/accent/accessibility preferences to the mobile UI and persist.
+- Accent selector keeps its selected value visible.
+- Sign in and account creation now stay inside the same LifeTracker app window.
+- Added in-app Sign Out in Settings.
+- Sign Out returns to the integrated Sign In screen without closing the app.
