@@ -1,8 +1,6 @@
 package UI;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 public final class Translations {
     private static final Map<String, Map<String, String>> DATA = new LinkedHashMap<>();
     static {
@@ -457,14 +455,12 @@ public final class Translations {
         m383.put("weighted_goal_note", "成绩目标和路径规划使用标准模式成绩，与 Python 版本一致。");
         DATA.put("中文", m383);
     }
-
-    private Translations() {}
-
+    private Translations() {
+    }
     public static String get(String language, String key) {
         Map<String, String> selected = DATA.getOrDefault(language, DATA.get("English"));
         return selected.getOrDefault(key, DATA.get("English").getOrDefault(key, key));
     }
-
     public static String[] languages() {
         return DATA.keySet().toArray(new String[0]);
     }

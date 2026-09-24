@@ -1,0 +1,23 @@
+LifeTracker V1.1.4 Contribution
+
+- Added a Home-page To-Do section backed by the existing assignment planner.
+- Unfinished assignments appear as academic To-Dos on Home.
+- Marking a To-Do Done removes it from Home but preserves the assignment in Assignments as "Work complete — awaiting grade".
+- Added recurring assignment support: Daily, Weekly, and Monthly. Completing a recurring item creates its next occurrence.
+- Reworked the Home dashboard so primary content stacks vertically and uses the existing vertical scroll pane instead of relying on left-to-right dashboard rows.
+- Changed Home quick actions to a vertical stack for mobile-friendly navigation.
+- Preserved compatibility with V1.1.3 planner data; old saved assignments default to Repeat = None.
+- Updated the application window version label to LifeTracker 1.1.4.
+
+Validation performed:
+- Full Java source tree compiled successfully with javac.
+
+UI refinement: compact Home dashboard, To-Do prioritized, academic info bar, hidden scrollbars with mouse-wheel vertical scrolling, compact progress and quick actions.
+
+Integration fix after hands-on testing:
+- Academic To-Dos now use an existing-class selector rather than free-text class names.
+- Linked assignments now appear inside the selected Class detail page immediately.
+- Completing linked work changes it to awaiting-grade status rather than removing it.
+- Completed linked assignments now expose Add Grade from both Assignments and Class detail.
+- Grade entry is prefilled with the assignment title and optional point value.
+- Once a matching grade is saved, the linked assignment displays as Graded.

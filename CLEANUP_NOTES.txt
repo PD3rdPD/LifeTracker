@@ -1,0 +1,14 @@
+LifeTracker V1.1.4 cleanup
+
+Completed:
+- Reformatted all Java source files for readability.
+- Fixed the Assignments card layout so action buttons start on the left and cards no longer use a fixed 360x105 size.
+- Reconnected HiddenFeatureController to the LifeTracker dashboard title so hidden/easter-egg triggers can receive input again.
+- Updated active source/UI version labels from 1.1.3 to 1.1.4.
+- Removed generated out/ and out_v114/ class folders; run_lifetracker.bat recreates out/ on launch.
+- Removed the obsolete run_lifetracker_1_1_3.bat launcher.
+- Verified the full source tree compiles successfully.
+- Verified CalculatorFeatureTest passes.
+
+File-count note:
+The project has 51 Java source files. Some older UI classes appear to be legacy/unreferenced by the current MainDashboardFrame flow, but they were intentionally kept in this cleanup because deleting them could remove older features or useful code. A later architecture/refactor pass can safely consolidate those after feature-by-feature comparison.

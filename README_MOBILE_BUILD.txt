@@ -1,4 +1,4 @@
-LifeTracker 1.1.3 Mobile-First Functional Build
+LifeTracker 1.1.4 Mobile-First Functional Build
 
 This build replaces the legacy pop-up workflow inside the signed-in application with single-window navigation.
 

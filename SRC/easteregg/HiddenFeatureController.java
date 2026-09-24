@@ -1,14 +1,11 @@
 package easteregg;
-
 import account.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 public final class HiddenFeatureController {
     private static final String SOS = "...---...";
     private final JLabel target;
@@ -21,35 +18,30 @@ public final class HiddenFeatureController {
     private boolean devArmed;
     private int devTapCount;
     private long devArmedAt;
-
     private HiddenFeatureController(JLabel target, Window owner, User user) {
         this.target = target;
         this.owner = owner;
         this.user = user;
     }
-
     public static void install(JLabel target, Window owner, User user) {
         HiddenFeatureController controller = new HiddenFeatureController(target, owner, user);
         controller.installListeners();
     }
-
     private void installListeners() {
         target.setFocusable(true);
         target.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         target.setToolTipText(null);
-
         target.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 pressStarted = System.currentTimeMillis();
                 target.requestFocusInWindow();
             }
-
             @Override public void mouseReleased(MouseEvent e) {
                 long duration = System.currentTimeMillis() - pressStarted;
                 handlePress(duration);
             }
-        });
-
+        }
+        );
         target.addKeyListener(new KeyAdapter() {
             @Override public void keyTyped(KeyEvent e) {
                 typed.append(e.getKeyChar());
@@ -59,12 +51,11 @@ public final class HiddenFeatureController {
                     openConsole();
                 }
             }
-        });
+        }
+        );
     }
-
     private void handlePress(long durationMs) {
         long now = System.currentTimeMillis();
-
         if (durationMs >= 1800) {
             devArmed = true;
             devTapCount = 0;
@@ -72,7 +63,6 @@ public final class HiddenFeatureController {
             morse.setLength(0);
             return;
         }
-
         if (devArmed) {
             if (now - devArmedAt > 2200) {
                 devArmed = false;
@@ -88,7 +78,6 @@ public final class HiddenFeatureController {
                 return;
             }
         }
-
         if (now - lastSymbolAt > 1600) morse.setLength(0);
         lastSymbolAt = now;
         morse.append(durationMs >= 650 ? '-' : '.');
@@ -102,7 +91,6 @@ public final class HiddenFeatureController {
             if (!SOS.startsWith(morse.toString())) morse.setLength(0);
         }
     }
-
     private void openConsole() {
         SwingUtilities.invokeLater(() -> new DevConsoleDialog(owner, user).setVisible(true));
     }

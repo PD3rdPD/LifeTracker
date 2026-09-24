@@ -1,10 +1,8 @@
 package UI;
-
 import GPA.GPACalculator;
 import account.User;
 import classes.Class;
 import storage.StorageManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -14,18 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 public class ClassesPanel extends JPanel {
     private final User user;
     private final StorageManager storage;
     private final List<Class> classes;
     private final GPACalculator calculator = new GPACalculator();
-
     private final DefaultListModel<Class> classListModel = new DefaultListModel<>();
     private final JList<Class> classList = new JList<>(classListModel);
     private final JComboBox<String> yearFilter = new JComboBox<>();
     private final JLabel yearSummary = new JLabel("No classes yet");
-
     public ClassesPanel(User user, StorageManager storage) {
         this.user = user;
         this.storage = storage;
@@ -35,7 +30,6 @@ public class ClassesPanel extends JPanel {
         buildUI();
         refreshAll();
     }
-
     private void buildUI() {
         JPanel top = new JPanel(new BorderLayout(10, 10));
         JPanel titleBox = new JPanel();
@@ -45,19 +39,16 @@ public class ClassesPanel extends JPanel {
         titleBox.add(title);
         titleBox.add(new JLabel("Open a class to add grades and see what you are making in that class."));
         top.add(titleBox, BorderLayout.WEST);
-
         JPanel yearBox = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         yearBox.add(new JLabel("Academic Year"));
         yearFilter.setPreferredSize(new Dimension(150, 30));
         yearBox.add(yearFilter);
         top.add(yearBox, BorderLayout.EAST);
         add(top, BorderLayout.NORTH);
-
         classList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         classList.setFixedCellHeight(62);
         classList.setCellRenderer(new ClassRenderer());
         add(new JScrollPane(classList), BorderLayout.CENTER);
-
         JButton addClass = new JButton("+ Add Class");
         JButton open = new JButton("Open Class");
         JButton delete = new JButton("Delete Class");
@@ -69,7 +60,6 @@ public class ClassesPanel extends JPanel {
         actions.add(delete);
         bottom.add(actions, BorderLayout.EAST);
         add(bottom, BorderLayout.SOUTH);
-
         yearFilter.addActionListener(e -> refreshClassList());
         addClass.addActionListener(e -> promptAddClass());
         open.addActionListener(e -> openSelected());
@@ -78,36 +68,37 @@ public class ClassesPanel extends JPanel {
             @Override public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) openSelected();
             }
-        });
+        }
+        );
     }
-
     public void promptAddClass() {
         JTextField name = new JTextField();
         JTextField teacher = new JTextField();
         JTextField credits = new JTextField("1.0");
         JTextField semester = new JTextField("Fall");
         JTextField year = new JTextField(currentSuggestedYear());
-        JComboBox<String> level = new JComboBox<>(new String[]{
-                Class.REGULAR, Class.HONORS, Class.AP_IB, Class.DUAL_ENROLLMENT
-        });
+        JComboBox<String> level = new JComboBox<>(new String[] {
+            Class.REGULAR, Class.HONORS, Class.AP_IB, Class.DUAL_ENROLLMENT
+        }
+        );
         JPanel panel = new JPanel(new GridLayout(0, 2, 8, 8));
-        panel.add(new JLabel("Class Name")); panel.add(name);
-        panel.add(new JLabel("Teacher")); panel.add(teacher);
-        panel.add(new JLabel("Credit Value")); panel.add(credits);
-        panel.add(new JLabel("Course Level")); panel.add(level);
-        panel.add(new JLabel("Semester")); panel.add(semester);
-        panel.add(new JLabel("Academic Year")); panel.add(year);
-
-        if (JOptionPane.showConfirmDialog(this, panel, "Add Class",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) return;
-
+        panel.add(new JLabel("Class Name"));
+        panel.add(name);
+        panel.add(new JLabel("Teacher"));
+        panel.add(teacher);
+        panel.add(new JLabel("Credit Value"));
+        panel.add(credits);
+        panel.add(new JLabel("Course Level"));
+        panel.add(level);
+        panel.add(new JLabel("Semester"));
+        panel.add(semester);
+        panel.add(new JLabel("Academic Year"));
+        panel.add(year);
+        if (JOptionPane.showConfirmDialog(this, panel, "Add Class", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) return;
         try {
-            Class classData = new Class(name.getText(), teacher.getText(),
-                    Double.parseDouble(credits.getText().trim()), semester.getText(), year.getText(),
-                    (String) level.getSelectedItem());
+            Class classData = new Class(name.getText(), teacher.getText(), Double.parseDouble(credits.getText().trim()), semester.getText(), year.getText(), (String) level.getSelectedItem());
             for (Class existing : classes) {
-                if (existing.getClassName().equalsIgnoreCase(classData.getClassName())
-                        && existing.getAcademicYear().equalsIgnoreCase(classData.getAcademicYear())) {
+                if (existing.getClassName().equalsIgnoreCase(classData.getClassName()) && existing.getAcademicYear().equalsIgnoreCase(classData.getAcademicYear())) {
                     throw new IllegalArgumentException("That class already exists for this academic year.");
                 }
             }
@@ -124,7 +115,6 @@ public class ClassesPanel extends JPanel {
             showError(ex.getMessage());
         }
     }
-
     private void openSelected() {
         Class selected = classList.getSelectedValue();
         if (selected == null) {
@@ -134,19 +124,15 @@ public class ClassesPanel extends JPanel {
         Window owner = SwingUtilities.getWindowAncestor(this);
         new ClassDetailDialog(owner, selected, this::save, this::refreshAll).setVisible(true);
     }
-
     private void deleteClass() {
         Class selected = classList.getSelectedValue();
         if (selected == null) return;
-        int choice = JOptionPane.showConfirmDialog(this,
-                "Delete " + selected.getClassName() + " and its saved grades?",
-                "Delete Class", JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(this, "Delete " + selected.getClassName() + " and its saved grades?", "Delete Class", JOptionPane.YES_NO_OPTION);
         if (choice != JOptionPane.YES_OPTION) return;
         classes.remove(selected);
         save();
         refreshAll();
     }
-
     private void refreshAll() {
         String selectedYear = (String) yearFilter.getSelectedItem();
         yearFilter.removeAllItems();
@@ -158,7 +144,6 @@ public class ClassesPanel extends JPanel {
         if (yearFilter.getSelectedIndex() < 0) yearFilter.setSelectedIndex(0);
         refreshClassList();
     }
-
     private void refreshClassList() {
         String year = (String) yearFilter.getSelectedItem();
         classListModel.clear();
@@ -177,43 +162,40 @@ public class ClassesPanel extends JPanel {
         }
         repaint();
     }
-
     private String currentSuggestedYear() {
         java.time.LocalDate now = java.time.LocalDate.now();
         int year = now.getYear();
         int start = now.getMonthValue() >= 7 ? year : year - 1;
         return start + "-" + (start + 1);
     }
-
-    private void save() { storage.saveClasses(user.getUsername(), classes); }
+    private void save() {
+        storage.saveClasses(user.getUsername(), classes);
+    }
     public void reloadFromStorage() {
         classes.clear();
         classes.addAll(storage.loadClasses(user.getUsername()));
         refreshAll();
     }
-
     public void openClass(Class selected) {
         if (selected == null) return;
         Window owner = SwingUtilities.getWindowAncestor(this);
         new ClassDetailDialog(owner, selected, this::save, this::refreshAll).setVisible(true);
     }
-
-    public List<Class> getClasses() { return new ArrayList<>(classes); }
+    public List<Class> getClasses() {
+        return new ArrayList<>(classes);
+    }
     public void reload() {
         classes.clear();
         classes.addAll(storage.loadClasses(user.getUsername()));
         refreshAll();
     }
-
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Grades", JOptionPane.ERROR_MESSAGE);
     }
-
     private class ClassRenderer extends JPanel implements ListCellRenderer<Class> {
         private final JLabel name = new JLabel();
         private final JLabel details = new JLabel();
         private final JLabel grade = new JLabel();
-
         ClassRenderer() {
             setLayout(new BorderLayout(10, 4));
             JPanel center = new JPanel();
@@ -227,13 +209,10 @@ public class ClassesPanel extends JPanel {
             add(grade, BorderLayout.EAST);
             setBorder(new EmptyBorder(7, 10, 7, 10));
         }
-
         @Override
-        public Component getListCellRendererComponent(JList<? extends Class> list, Class value, int index,
-                                                      boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<? extends Class> list, Class value, int index, boolean isSelected, boolean cellHasFocus) {
             name.setText(value.getClassName());
-            details.setText(value.getCourseLevel() + " • " + value.getSemester() + " • " + value.getAcademicYear()
-                    + (value.getTeacherName().isBlank() ? "" : " • " + value.getTeacherName()));
+            details.setText(value.getCourseLevel() + " • " + value.getSemester() + " • " + value.getAcademicYear() + (value.getTeacherName().isBlank() ? "" : " • " + value.getTeacherName()));
             if (value.getGrades().isEmpty()) {
                 grade.setText("No grades");
             } else {

@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 if not exist out mkdir out
 
-echo Compiling LifeTracker 1.1.1...
+echo Compiling LifeTracker 1.1.4...
 set SOURCES=
 for /r SRC %%f in (*.java) do call set SOURCES=%%SOURCES%% "%%f"
 
@@ -15,6 +15,6 @@ if errorlevel 1 (
   exit /b 1
 )
 
-echo Starting LifeTracker 1.1.1...
+echo Starting LifeTracker 1.1.4...
 java -cp out Main
 endlocal

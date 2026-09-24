@@ -2,7 +2,7 @@ LifeTracker 1.1.1
 =================
 
 Development build of a Java Swing academic tracking and portfolio app.
-This build is LifeTracker Version 1, Build 1, Patch 2 (V1.1.3).
+This build is LifeTracker Version 1, Build 1, Patch 2 (V1.1.4).
 
 Core structure in this build
 ----------------------------

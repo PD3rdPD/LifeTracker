@@ -1,28 +1,29 @@
 package UI;
-
 import account.AccountManager;
 import account.User;
 import storage.StorageManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-
 public class SettingsPanel extends JPanel {
     private final AccountManager accountManager;
     private final User user;
     private final StorageManager storage;
     private final Runnable profileChanged;
-
-    private final JComboBox<String> appearance = new JComboBox<>(new String[]{"System", "Light", "Dark"});
-    private final JComboBox<String> accent = new JComboBox<>(new String[]{"Blue", "Purple", "Green", "Pink", "Orange"});
+    private final JComboBox<String> appearance = new JComboBox<>(new String[] {
+        "System", "Light", "Dark"
+    }
+    );
+    private final JComboBox<String> accent = new JComboBox<>(new String[] {
+        "Blue", "Purple", "Green", "Pink", "Orange"
+    }
+    );
     private final JCheckBox largeText = new JCheckBox("Larger text");
     private final JTextField targetDegree = new JTextField();
     private final JTextField honors = new JTextField();
     private final JTextField apIb = new JTextField();
     private final JTextField dual = new JTextField();
     private final JTextField cap = new JTextField();
-
     public SettingsPanel(AccountManager accountManager, User user, Runnable profileChanged) {
         this.accountManager = accountManager;
         this.user = user;
@@ -33,17 +34,14 @@ public class SettingsPanel extends JPanel {
         buildUI();
         load();
     }
-
     private void buildUI() {
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-
         JLabel title = new JLabel("Settings");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 28f));
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(title);
         content.add(Box.createVerticalStrut(12));
-
         JPanel appearanceCard = section("Appearance");
         appearanceCard.add(row("Base appearance", appearance));
         appearanceCard.add(row("Accent color", accent));
@@ -53,7 +51,6 @@ public class SettingsPanel extends JPanel {
         appearanceCard.add(applyTheme);
         content.add(appearanceCard);
         content.add(Box.createVerticalStrut(12));
-
         JPanel profile = section("Academic Profile");
         profile.add(row("Target Degree / Career", targetDegree));
         JButton saveProfile = new JButton("Save Academic Profile");
@@ -61,7 +58,6 @@ public class SettingsPanel extends JPanel {
         profile.add(saveProfile);
         content.add(profile);
         content.add(Box.createVerticalStrut(12));
-
         JPanel gpa = section("Weighted GPA Settings");
         gpa.add(row("Honors bonus", honors));
         gpa.add(row("AP / IB bonus", apIb));
@@ -72,7 +68,6 @@ public class SettingsPanel extends JPanel {
         gpa.add(saveGpa);
         content.add(gpa);
         content.add(Box.createVerticalStrut(12));
-
         JPanel securityCard = section("Account & Security");
         JTextField userId = new JTextField(user.getUserId());
         userId.setEditable(false);
@@ -80,9 +75,7 @@ public class SettingsPanel extends JPanel {
         roleField.setEditable(false);
         JTextField passwordStatus = new JTextField("PBKDF2-HMAC-SHA256 hashed + salted");
         passwordStatus.setEditable(false);
-        JTextField encryptionStatus = new JTextField(storage.isEncryptedAtRest()
-                ? "Encrypted at rest"
-                : "Development local storage - full data encryption is not enabled yet");
+        JTextField encryptionStatus = new JTextField(storage.isEncryptedAtRest() ? "Encrypted at rest" : "Development local storage - full data encryption is not enabled yet");
         encryptionStatus.setEditable(false);
         securityCard.add(row("Stable User ID", userId));
         securityCard.add(row("Account role", roleField));
@@ -90,22 +83,19 @@ public class SettingsPanel extends JPanel {
         securityCard.add(row("Academic data", encryptionStatus));
         content.add(securityCard);
         content.add(Box.createVerticalStrut(12));
-
         JPanel storageCard = section("Local Storage");
         JTextField path = new JTextField(storage.getDataDirectory().toAbsolutePath().toString());
         path.setEditable(false);
         storageCard.add(row("Data folder", path));
-        JTextArea storageNote = new JTextArea("LifeTracker 1.1.3 is still a local development build. The project now has stable account IDs, roles, scoped read-only access grants, expiration/revocation, hashed invitation codes, and an audit trail so the data model can move to a secure cloud/server later without redesigning the academic features.");
+        JTextArea storageNote = new JTextArea("LifeTracker 1.1.4 is still a local development build. The project now has stable account IDs, roles, scoped read-only access grants, expiration/revocation, hashed invitation codes, and an audit trail so the data model can move to a secure cloud/server later without redesigning the academic features.");
         storageNote.setEditable(false);
         storageNote.setLineWrap(true);
         storageNote.setWrapStyleWord(true);
         storageNote.setOpaque(false);
         storageCard.add(storageNote);
         content.add(storageCard);
-
         add(new JScrollPane(content), BorderLayout.CENTER);
     }
-
     private JPanel section(String title) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -114,7 +104,6 @@ public class SettingsPanel extends JPanel {
         panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 260));
         return panel;
     }
-
     private JPanel row(String label, JComponent component) {
         JPanel p = new JPanel(new BorderLayout(10, 4));
         p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
@@ -124,7 +113,6 @@ public class SettingsPanel extends JPanel {
         p.add(component, BorderLayout.CENTER);
         return p;
     }
-
     private void load() {
         appearance.setSelectedItem(PreferencesManager.getAppearance());
         accent.setSelectedItem(PreferencesManager.getAccentColor());
@@ -135,7 +123,6 @@ public class SettingsPanel extends JPanel {
         dual.setText(Double.toString(PreferencesManager.getDualBonus()));
         cap.setText(Double.toString(PreferencesManager.getWeightedCap()));
     }
-
     private void applyAppearance() {
         PreferencesManager.setAppearance((String) appearance.getSelectedItem());
         PreferencesManager.setAccentColor((String) accent.getSelectedItem());
@@ -143,14 +130,12 @@ public class SettingsPanel extends JPanel {
         ThemeManager.applyTheme((String) appearance.getSelectedItem(), (String) accent.getSelectedItem());
         ThemeManager.refreshAllWindows();
     }
-
     private void saveProfile() {
         user.setTargetDegree(targetDegree.getText());
         accountManager.saveUserProfile(user);
         if (profileChanged != null) profileChanged.run();
         JOptionPane.showMessageDialog(this, "Academic profile saved.");
     }
-
     private void saveGpa() {
         try {
             double h = Double.parseDouble(honors.getText().trim());

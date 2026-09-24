@@ -1,16 +1,13 @@
 package UI;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-
 public final class ThemeManager {
-    private ThemeManager() {}
-
+    private ThemeManager() {
+    }
     public static void applySavedTheme() {
         applyTheme(PreferencesManager.getAppearance(), PreferencesManager.getAccentColor());
     }
-
     public static void applyTheme(String appearance, String accentName) {
         boolean dark = "Dark".equalsIgnoreCase(appearance);
         boolean system = "System".equalsIgnoreCase(appearance);
@@ -25,18 +22,19 @@ public final class ThemeManager {
             AppStyle.TEXT = Color.WHITE;
             AppStyle.MUTED = highContrast ? new Color(225,225,225) : new Color(166,184,211);
         } else {
-            AppStyle.BG = new Color(241,246,253); AppStyle.BG2 = Color.WHITE;
-            AppStyle.CARD = Color.WHITE; AppStyle.CARD2 = new Color(231,239,249);
-            AppStyle.TEXT = new Color(20,31,48); AppStyle.MUTED = new Color(82,101,128);
+            AppStyle.BG = new Color(241,246,253);
+            AppStyle.BG2 = Color.WHITE;
+            AppStyle.CARD = Color.WHITE;
+            AppStyle.CARD2 = new Color(231,239,249);
+            AppStyle.TEXT = new Color(20,31,48);
+            AppStyle.MUTED = new Color(82,101,128);
         }
-
         if (!system) {
             Color bg = dark ? new Color(35, 37, 42) : new Color(246, 247, 249);
             Color panel = dark ? new Color(45, 48, 54) : Color.WHITE;
             Color text = dark ? new Color(238, 238, 238) : new Color(30, 30, 30);
             Color field = dark ? new Color(58, 61, 68) : Color.WHITE;
             Color border = dark ? new Color(80, 84, 92) : new Color(205, 208, 214);
-
             UIManager.put("Panel.background", bg);
             UIManager.put("Viewport.background", bg);
             UIManager.put("Label.foreground", text);
@@ -66,7 +64,6 @@ public final class ThemeManager {
             UIManager.put("RadioButton.foreground", text);
             UIManager.put("TitledBorder.titleColor", text);
         }
-
         UIManager.put("Button.background", accent);
         UIManager.put("Button.foreground", bestTextFor(accent));
         UIManager.put("Button.select", accent.darker());
@@ -77,7 +74,6 @@ public final class ThemeManager {
         UIManager.put("Table.selectionForeground", bestTextFor(accent));
         UIManager.put("ProgressBar.foreground", accent);
     }
-
     public static void refreshAllWindows() {
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
@@ -86,7 +82,6 @@ public final class ThemeManager {
             window.repaint();
         }
     }
-
     public static Color accent(String name) {
         if (name == null) return new Color(61, 109, 204);
         return switch (name) {
@@ -97,9 +92,9 @@ public final class ThemeManager {
             case "Teal" -> new Color(0, 145, 154);
             case "Red" -> new Color(205, 70, 70);
             default -> new Color(61, 109, 204);
-        };
+        }
+        ;
     }
-
     private static Color bestTextFor(Color color) {
         double luminance = (0.299 * color.getRed() + 0.587 * color.getGreen() + 0.114 * color.getBlue()) / 255.0;
         return luminance > 0.62 ? Color.BLACK : Color.WHITE;
